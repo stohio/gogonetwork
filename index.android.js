@@ -4,6 +4,7 @@
  * @flow
  */
 
+import ElevatedView from 'react-native-elevated-view';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -12,42 +13,43 @@ import {
   View
 } from 'react-native';
 
+class BusinessCardList extends Component {
+    render() {
+        return (
+            <View style={styles.businessCardContainer}>
+                <ElevatedView elevation={3} style={styles.stayElevated}>
+                    <Text>business card 1</Text>
+                </ElevatedView>
+                <ElevatedView elevation={3} style={styles.stayElevated}>
+                    <Text>business card 2</Text>
+                </ElevatedView>
+            </View>
+        );
+    }
+}
+
 export default class gogonetwork extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+        <BusinessCardList/>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  businessCardContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
+  stayElevated: {
+    width: 300,
+    height: 50,
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 AppRegistry.registerComponent('gogonetwork', () => gogonetwork);
