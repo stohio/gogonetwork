@@ -54,7 +54,7 @@ function saveVCard(filename, vcard) {
                 RNFS.stat(profilesPath)
                     .then((stat) => {
                         if (stat.isDirectory()) {
-                            writeVCardToFile(filePath);
+                            writeVCardToFile(filePath, vcard);
                         } else {
                             // if it is a file delete it and make a directory in its place
                             RNFS.unlink(profilesPath)
