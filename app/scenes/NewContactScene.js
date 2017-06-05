@@ -12,8 +12,8 @@ class PhoneInputBox extends Component {
         return (
             <View style={styles.phoneInputForm}>
                 <View style={styles.phoneInputField}>
-                    <TextInput style = {styles.phoneInputText} 
-                        keyboardType='phone-pad' 
+                    <TextInput style = {styles.phoneInputText}
+                        keyboardType='phone-pad'
                         placeholder='phone number'
                         underlineColorAndroid='transparent'/>
                 </View>
@@ -22,7 +22,7 @@ class PhoneInputBox extends Component {
     }
 }
 
-export default class NewContactScreen extends Component {
+export default class NewContactScene extends Component {
     static navigationOptions = ({navigation}) => ({
         title: navigation.state.params.name,
     });

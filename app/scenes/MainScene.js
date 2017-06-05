@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ElevatedView from 'react-native-elevated-view';
+import ActionView from 'react-native-action-button';
 import StackNavigator from 'react-navigation';
 import {
     TouchableOpacity,
@@ -28,7 +29,7 @@ class BusinessCardElement extends Component {
 class BusinessCardList extends Component {
     render() {
         return (
-            <View flex={8}>
+            <View flex={1}>
                 <ScrollView flex={1} contentContainerStyle={styles.businessCardContainer}>
                     <BusinessCardElement cardName='business card 1' navigation={ this.props.navigation }/>
                     <BusinessCardElement cardName='business card 2' navigation={ this.props.navigation }/>
@@ -55,21 +56,18 @@ class BusinessCardList extends Component {
     }
 }
 
-class AddBusinessCardButton extends Component {
+class AddProfileButton extends Component {
     render() {
+        const { navigate } = this.props.navigation;
         return (
-            <View style={styles.addBusinessCardButtonForm}>
-                <TouchableOpacity style={styles.addBusinessCardButton} onPress={() => {
-                        console.log('test');
-                    }}>
-                    <Text>Add Business Card</Text>
-                </TouchableOpacity>
-            </View>
-        ); 
+            <Button style={styles.addProfileButton} title="Add Profile" onPress={() => {
+                navigate('NewProfile');
+            }}/>
+        );
     }
 }
 
-export default class MainScreen extends Component {
+export default class MainScene extends Component {
     static navigationOptions = {
         title: 'Welcome',
     };
@@ -78,7 +76,7 @@ export default class MainScreen extends Component {
         return (
             <View flex={1}>
                 <BusinessCardList navigation={ this.props.navigation }/>
-                <AddBusinessCardButton/>
+                <AddProfileButton navigation={ this.props.navigation }/>
             </View>
         );
     }
@@ -107,14 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
 
-    addBusinessCardButtonForm: {
-        flex: 1,
-    },
-
-    addBusinessCardButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+    addProfileButton: {
         backgroundColor: '#458588',
     }
 });
