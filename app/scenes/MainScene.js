@@ -37,7 +37,7 @@ class BusinessCardList extends Component {
             .then((result) => {
                 result.forEach((profileName) => {
                     profileList.push(
-                        <BusinessCardElement cardName={profileName} navigation={this.props.navigation}/>
+                        <BusinessCardElement key={profileName} cardName={profileName} navigation={this.props.navigation}/>
                     );
                 });
 
