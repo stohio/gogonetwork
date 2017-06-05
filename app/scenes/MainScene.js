@@ -28,28 +28,11 @@ class BusinessCardElement extends Component {
 
 class BusinessCardList extends Component {
     render() {
+        // TODO dynamically load the businesscards from storage
         return (
             <View flex={1}>
                 <ScrollView flex={1} contentContainerStyle={styles.businessCardContainer}>
                     <BusinessCardElement cardName='business card 1' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 2' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 3' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 4' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 5' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 6' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 7' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 8' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 9' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 10' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 11' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 12' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 13' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 14' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 15' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 16' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 17' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 18' navigation={ this.props.navigation }/>
-                    <BusinessCardElement cardName='business card 19' navigation={ this.props.navigation }/>
                 </ScrollView>
             </View>
         );
