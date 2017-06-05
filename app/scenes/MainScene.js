@@ -10,6 +10,7 @@ import {
     View,
     ScrollView,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 
 class BusinessCardElement extends Component {
     render() {
@@ -27,12 +28,30 @@ class BusinessCardElement extends Component {
 }
 
 class BusinessCardList extends Component {
+    constructor(props) {
+        super(props);
+
+        var profileList = [];
+        this.state = {profiles: profileList}
+        RNFS.readdir(RNFS.DocumentDirectoryPath + '/profiles')
+            .then((result) => {
+                result.forEach((profileName) => {
+                    profileList.push(
+                        <BusinessCardElement cardName={profileName} navigation={this.props.navigation}/>
+                    );
+                });
+
+                this.setState({ profiles: profileList });
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
     render() {
-        // TODO dynamically load the businesscards from storage
         return (
             <View flex={1}>
                 <ScrollView flex={1} contentContainerStyle={styles.businessCardContainer}>
-                    <BusinessCardElement cardName='business card 1' navigation={ this.props.navigation }/>
+                    { this.state.profiles }
                 </ScrollView>
             </View>
         );

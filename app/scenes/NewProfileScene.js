@@ -22,6 +22,62 @@ var Profile = t.struct({
 
 var options = {};
 
+function writeVCardToFile(path, vcard) {
+    RNFS.writeFile(path, vcard, 'utf8')
+        .then((success) => {
+            console.log('FILE WRITTEN');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+function createProfilesDirAndWriteVCardToFile(path, vcard) {
+    RNFS.mkdir(profilesPath)
+        .then((success) => {
+            writeVCardToFile(path, vcard);
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+}
+
+function saveVCard(filename, vcard) {
+    var profilesPath = RNFS.DocumentDirectoryPath + '/profiles';
+    var filePath = RNFS.DocumentDirectoryPath + '/profiles/' + filename + '.vcard';
+
+    // Check to see if there is a file/directory named profiles
+    RNFS.exists(profilesPath)
+        .then((exists) => {
+            if (exists) {
+                // Check to see if the profiles file/directory is a file or a directory
+                RNFS.stat(profilesPath)
+                    .then((stat) => {
+                        if (stat.isDirectory()) {
+                            writeVCardToFile(filePath);
+                        } else {
+                            // if it is a file delete it and make a directory in its place
+                            RNFS.unlink(profilesPath)
+                                .then((success) => {
+                                    createProfilesDirAndWriteVCardToFile(filePath, vcard);
+                                })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+            } else {
+                createProfilesDirAndWriteVCardToFile(filePath, vcard);
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+}
+
 class NewProfileForm extends Component {
     constructor(props) {
         super (props);
@@ -32,9 +88,6 @@ class NewProfileForm extends Component {
     onPress() {
         var value = this.refs.form.getValue();
         if (value) {
-            console.log(value);
-            // TODO save profile to storage
-            var path = RNFS.DocumentDirectoryPath + '/' + value.profileName + '.txt';
             var vcard = 'BEGIN:VCARD\nVERSION:4.0\n' +
                 'FN:' + value.Title + ' ' + value.FirstName + ' ' + value.LastName + '\n' +
                 'TITLE:' + value.Title + '\n' +
@@ -43,13 +96,7 @@ class NewProfileForm extends Component {
                 'URL:' + value.LinkedIn + '\n' +
                 'END:VCARD'
 
-            RNFS.writeFile(path, vcard, 'utf8')
-                .then((success) => {
-                    console.log('FILE WRITTEN');
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                });
+            saveVCard(value.profileName, vcard);
         }
     }
 
