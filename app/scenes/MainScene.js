@@ -12,14 +12,18 @@ import {
 } from 'react-native';
 import RNFS from 'react-native-fs';
 
-class BusinessCardElement extends Component {
+class ProfileCardElement extends Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
             <ElevatedView elevation={3} style={styles.stayElevated}>
-                <TouchableOpacity style={styles.cardButton} onPress={() => {
-                    navigate('NewContact', { name: this.props.cardName });
-                }}>
+                <TouchableOpacity style={styles.cardButton} 
+                    onPress={() => {
+                        navigate('NewContact', { name: this.props.cardName });
+                    }}
+                    onLongPress={() => {
+                        //TODO create drop down to delete or edit this profilecard
+                    }}>
                     <Text>{this.props.cardName}</Text>
                 </TouchableOpacity>
             </ElevatedView>
@@ -27,26 +31,31 @@ class BusinessCardElement extends Component {
     }
 }
 
-class BusinessCardList extends Component {
+class ProfileCardList extends Component {
+    addNewProfile(profileName) {
+        profileList = this.state.profiles;
+        profileList.push(
+            <ProfileCardElement key={profileName} cardName={profileName} navigation={this.props.navigation}/>
+        );
+        this.setState({ profiles: profileList });
+    }
+
     constructor(props) {
         super(props);
+
+        this.addNewProfile = this.addNewProfile.bind(this);
 
         var profileList = [];
         this.state = {profiles: profileList}
         RNFS.readdir(RNFS.DocumentDirectoryPath + '/profiles')
             .then((result) => {
-                result.forEach((profileName) => {
-                    profileList.push(
-                        <BusinessCardElement key={profileName} cardName={profileName} navigation={this.props.navigation}/>
-                    );
-                });
-
-                this.setState({ profiles: profileList });
+                result.forEach(this.addNewProfile);
             })
             .catch((err) => {
                 console.log(err.message);
             });
     }
+
     render() {
         return (
             <View flex={1}>
@@ -77,7 +86,7 @@ export default class MainScene extends Component {
     render() {
         return (
             <View flex={1}>
-                <BusinessCardList navigation={ this.props.navigation }/>
+                <ProfileCardList ref="profileList" navigation={ this.props.navigation }/>
                 <AddProfileButton navigation={ this.props.navigation }/>
             </View>
         );

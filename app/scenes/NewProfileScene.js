@@ -17,7 +17,6 @@ var Profile = t.struct({
     Title: t.maybe(t.String),
     PhoneNumber: t.maybe(t.String),
     Email: t.maybe(t.String),
-    LinkedIn: t.maybe(t.String),
 });
 
 var options = {};
@@ -76,6 +75,7 @@ function saveVCard(filename, vcard) {
         .catch((err) => {
             console.log(err.message);
         });
+
 }
 
 class NewProfileForm extends Component {
@@ -86,7 +86,7 @@ class NewProfileForm extends Component {
     }
 
     onPress() {
-        var value = this.refs.form.getValue();
+        var value = this.refs.newProfileForm.getValue();
         if (value) {
             var vcard = 'BEGIN:VCARD\nVERSION:4.0\n' +
                 'FN:' + value.Title + ' ' + value.FirstName + ' ' + value.LastName + '\n' +
@@ -97,13 +97,14 @@ class NewProfileForm extends Component {
                 'END:VCARD'
 
             saveVCard(value.profileName, vcard);
+            // TODO find some way to pass the fact that there is a new profile back to the main Scene
         }
     }
 
     render() {
         return (
             <ScrollView contentContainerStyle={styles.formContainer}>
-                <Form ref="form" type={Profile} options={options}/>
+                <Form ref="newProfileForm" type={Profile} options={options}/>
                 <TouchableHighlight style={styles.formButton} onPress={this.onPress}>
                     <Text style={styles.formButtonText}>Save</Text>
                 </TouchableHighlight>

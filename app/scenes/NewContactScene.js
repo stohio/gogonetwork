@@ -2,21 +2,59 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TextInput,
+    TouchableHighlight,
     StyleSheet,
 } from 'react-native';
+import t from 'tcomb-form-native';
+import RNFS from 'react-native-fs';
+// import NativeModules from 'NativeModules';
+// 
+// const LinkingManager = Platform.OS === 'android' ? NativeModules.IntentAndroid : NativeModules.LinkingManager;
+var Mailer = require('NativeModules').RNMail;
 
+var Form = t.form.Form;
+
+var Profile = t.struct({
+    PhoneNumber: t.String,
+});
+
+var options = {};
 
 class PhoneInputBox extends Component {
+    constructor(props) {
+        super (props);
+
+        this.onPress = this.onPress.bind(this);
+    }
+
+    onPress() {
+        var value = this.refs.newContactForm.getValue();
+        if (value) {
+            console.log(RNFS.DocumentDirectoryPath + '/profiles/' + this.props.profileName + '.vcard');
+            Mailer.mail({
+                subject: 'test',
+                recipients: ['mroseman95@gmail.com'],
+                body: '',
+                attachement: {
+                    path: RNFS.DocumentDirectoryPath + '/profiles/' + this.props.profileName + '.vcard',
+                    type: 'vcard',
+                    name: this.props.profileName + '.vcard',
+                }
+            }, (error, event) => {
+                if (error) {
+                    console.log('could not send email');
+                }
+            });
+        }
+    }
+
     render() {
         return (
             <View style={styles.phoneInputForm}>
-                <View style={styles.phoneInputField}>
-                    <TextInput style = {styles.phoneInputText}
-                        keyboardType='phone-pad'
-                        placeholder='phone number'
-                        underlineColorAndroid='transparent'/>
-                </View>
+                <Form ref="newContactForm" type={Profile} options={options}/>
+                <TouchableHighlight style={styles.formButton} onPress={this.onPress}>
+                    <Text style={styles.formButtonText}>Send</Text>
+                </TouchableHighlight>
             </View>
         );
     }
@@ -29,7 +67,7 @@ export default class NewContactScene extends Component {
     render() {
         const { navigate }  = this.props.navigation;
         return (
-            <PhoneInputBox/>
+            <PhoneInputBox profileName={this.props.navigation.state.params.name}/>
         );
     }
 }
@@ -42,13 +80,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    phoneInputField: {
-        backgroundColor: 'white',
-    },
+    // phoneInputField: {
+    //     backgroundColor: 'white',
+    // },
 
-    phoneInputText: {
-        color: 'black',
-        fontSize: 50,
-        textAlign: 'center',
-    }
+    // phoneInputText: {
+    //     color: 'black',
+    //     fontSize: 50,
+    //     textAlign: 'center',
+    // }
 });
